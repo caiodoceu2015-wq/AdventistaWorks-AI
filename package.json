@@ -1,0 +1,33 @@
+{
+  "name": "schoolworks-ai",
+  "version": "1.0.0",
+  "description": "Plataforma para desenvolvimento de trabalhos escolares com IA e reconhecimento facial",
+  "main": "server.js",
+  "scripts": {
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "server": "nodemon server.js",
+    "client": "cd client && npm start",
+    "build": "cd client && npm run build",
+    "start": "node server.js"
+  },
+  "keywords": ["education", "ai", "facial-recognition", "image-editor"],
+  "author": "caiodoceu2015-wq",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "axios": "^1.4.0",
+    "mongoose": "^7.0.0",
+    "bcryptjs": "^2.4.3",
+    "jsonwebtoken": "^9.0.0",
+    "dotenv": "^16.0.3",
+    "cors": "^2.8.5",
+    "multer": "^1.4.5-lts.1",
+    "sharp": "^0.32.0",
+    "openai": "^3.3.0",
+    "express-fileupload": "^1.4.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.20",
+    "concurrently": "^8.0.1"
+  }
+}
