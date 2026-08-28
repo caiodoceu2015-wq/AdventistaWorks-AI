@@ -3,26 +3,14 @@ const mongoose = require('mongoose');
 const subjectSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: true,
-    unique: true
+    required: true
   },
   description: String,
-  icon: String,
-  color: String,
-  schoolYears: [String],
-  aiTopics: [
-    {
-      topic: String,
-      keyPoints: [String]
-    }
-  ],
-  resources: [
-    {
-      title: String,
-      url: String,
-      type: String
-    }
-  ],
+  schoolYears: [{
+    type: String,
+    enum: ['6º', '7º', '8º', '9º', '1º EM', '2º EM', '3º EM']
+  }],
+  topics: [String],
   createdAt: {
     type: Date,
     default: Date.now

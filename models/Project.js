@@ -5,41 +5,40 @@ const projectSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  description: String,
+  description: {
+    type: String,
+    required: true
+  },
   subject: {
     type: String,
     required: true
   },
-  schoolYear: String,
+  schoolYear: {
+    type: String,
+    required: true
+  },
   student: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
     required: true
   },
-  content: {
-    text: String,
-    images: [
-      {
-        url: String,
-        uploadedAt: Date,
-        hasTransparency: Boolean
-      }
-    ]
-  },
-  aiSuggestions: [
-    {
-      topic: String,
-      suggestion: String,
-      createdAt: Date
+  images: [{
+    url: String,
+    hasTransparency: Boolean,
+    uploadedAt: {
+      type: Date,
+      default: Date.now
     }
-  ],
+  }],
+  content: {
+    type: String,
+    default: ''
+  },
   status: {
     type: String,
-    enum: ['rascunho', 'em_progresso', 'concluido', 'entregue'],
+    enum: ['rascunho', 'finalizado'],
     default: 'rascunho'
   },
-  grade: Number,
-  teacherFeedback: String,
   createdAt: {
     type: Date,
     default: Date.now
