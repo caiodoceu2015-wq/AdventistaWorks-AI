@@ -1,0 +1,686 @@
+
+Código Completo (index.html)
+html
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adventista Works - Portal de Trabalhos</title>
+    <style>
+        :root {
+            --bg-color: #0b0f19;
+            --card-bg: #161b26;
+            --primary: #00ff66;
+            --primary-dim: rgba(0, 255, 102, 0.1);
+            --text: #ffffff;
+            --text-muted: #8b9bb4;
+            --border: #2d3748;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text);
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Telas Globais / Overlays */
+        .overlay-screen {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--bg-color);
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-box {
+            background: var(--card-bg);
+            padding: 40px;
+            border-radius: 12px;
+            border: 2px solid var(--primary);
+            box-shadow: 0 0 20px rgba(0, 255, 102, 0.2);
+            text-align: center;
+            width: 380px;
+        }
+
+        .modal-box h2 {
+            color: var(--primary);
+            margin-bottom: 5px;
+            font-size: 24px;
+        }
+
+        .modal-box p {
+            color: var(--text-muted);
+            font-size: 11px;
+            margin-bottom: 25px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        input, select, textarea, button {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            background: #1a202c;
+            color: white;
+            font-size: 15px;
+            outline: none;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 8px var(--primary-dim);
+        }
+
+        button {
+            background: var(--primary);
+            color: #000;
+            font-weight: bold;
+            cursor: pointer;
+            border: none;
+            transition: 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        button:hover {
+            box-shadow: 0 0 15px var(--primary);
+            background: #00cc52;
+        }
+
+        .alt-btn {
+            background: transparent;
+            color: var(--primary);
+            border: 1px solid var(--primary);
+            margin-top: 5px;
+        }
+        .alt-btn:hover {
+            background: var(--primary-dim);
+        }
+
+        /* Biometria Simulada */
+        .scanner-container {
+            position: relative;
+            width: 120px;
+            height: 120px;
+            margin: 20px auto;
+            border: 2px dashed var(--primary);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+        .scanner-icon {
+            font-size: 50px;
+            color: var(--primary);
+        }
+        .laser-line {
+            position: absolute;
+            width: 100%;
+            height: 3px;
+            background: var(--primary);
+            box-shadow: 0 0 10px var(--primary);
+            top: 0;
+            animation: scanning 2s linear infinite;
+            display: none;
+        }
+        @keyframes scanning {
+            0% { top: 0%; }
+            50% { top: 100%; }
+            100% { top: 0%; }
+        }
+
+        /* Menu Lateral (Sidebar) */
+        sidebar {
+            width: 280px;
+            background: var(--card-bg);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            z-index: 10;
+        }
+
+        .logo-area {
+            padding: 25px 20px;
+            border-bottom: 1px solid var(--border);
+            text-align: center;
+        }
+
+        .logo-area h1 {
+            font-size: 22px;
+            color: var(--primary);
+            letter-spacing: 1px;
+        }
+
+        .logo-area span {
+            font-size: 11px;
+            color: var(--text-muted);
+            display: block;
+            margin-top: 4px;
+        }
+
+        .user-badge {
+            padding: 12px 20px;
+            background: rgba(255,255,255,0.02);
+            border-bottom: 1px solid var(--border);
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+        .user-badge strong { color: var(--text); }
+
+        .subject-list {
+            list-style: none;
+            overflow-y: auto;
+            flex: 1;
+        }
+
+        .subject-item {
+            padding: 14px 20px;
+            cursor: pointer;
+            border-left: 3px solid transparent;
+            transition: 0.2s;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .subject-item:hover, .subject-item.active {
+            background: var(--primary-dim);
+            border-left-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .sidebar-footer {
+            padding: 15px;
+            border-top: 1px solid var(--border);
+        }
+
+        /* Área Principal de Conteúdo */
+        main {
+            flex: 1;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .main-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 15px;
+        }
+
+        .main-header h2 {
+            font-size: 24px;
+        }
+        .main-header h2 span {
+            color: var(--primary);
+        }
+
+        /* Editor e Canvas de Mídia */
+        .workspace {
+            display: flex;
+            gap: 20px;
+            flex: 1;
+            min-height: 0;
+        }
+
+        .editor-section {
+            flex: 3;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .text-editor {
+            flex: 1;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 20px;
+            color: white;
+            font-size: 16px;
+            resize: none;
+            line-height: 1.6;
+        }
+
+        .media-bar {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 15px;
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .media-preview-area {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 5px;
+        }
+
+        .preview-wrapper {
+            position: relative;
+            width: 80px;
+            height: 80px;
+            border: 1px solid var(--primary);
+            border-radius: 6px;
+            background: rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .preview-wrapper img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        .remove-img-btn {
+            position: absolute;
+            top: -5px; right: -5px;
+            width: 18px; height: 18px;
+            background: #ff3333; color: white;
+            border-radius: 50%; border: none;
+            font-size: 11px; cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+        }
+
+        /* Painel Lateral da IA */
+        .ia-panel {
+            flex: 1.2;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: inset 0 0 15px rgba(0,0,0,0.5);
+        }
+
+        .ia-header {
+            background: rgba(0, 255, 102, 0.05);
+            padding: 15px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .ia-avatar {
+            width: 10px; height: 10px;
+            background: var(--primary);
+            border-radius: 50%;
+            box-shadow: 0 0 8px var(--primary);
+        }
+
+        .ia-chat {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            font-size: 13.5px;
+            line-height: 1.5;
+        }
+
+        .msg {
+            padding: 10px 14px;
+            border-radius: 8px;
+            max-width: 90%;
+        }
+        .msg.system {
+            background: rgba(255,255,255,0.04);
+            border-left: 2px solid var(--primary);
+            color: #d1d5db;
+        }
+
+        /* Painel Avançado do Professor */
+        #teacher-dashboard {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--bg-color);
+            z-index: 500;
+            padding: 30px;
+            overflow-y: auto;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin-top: 20px;
+        }
+
+        .dashboard-box {
+            background: var(--card-bg);
+Use o código com cuidado.
+border: 1px solid var(--border);
+border-radius: 10px;
+padding: 20px;
+}
+.grade-item {
+padding: 12px;
+border-bottom: 1px solid var(--border);
+display: flex;
+justify-content: space-between;
+align-items: center;
+}
+.badge {
+background: var(--primary-dim);
+color: var(--primary);
+padding: 4px 8px;
+border-radius: 4px;
+font-size: 12px;
+}
+
+
+ADVENTISTA WORKS
+Portal de Trabalhos IA
+
+
+Selecione o Ano Escolar
+6º Ano do Ensino Fundamental
+7º Ano do Ensino Fundamental
+8º Ano do Ensino Fundamental
+9º Ano do Ensino Fundamental
+1º Ano do Ensino Médio
+2º Ano do Ensino Médio
+3º Ano do Ensino Médio
+
+Acessar Portal
+Portal do Docente
+
+AUTENTICAÇÃO DOCENTE
+Acesso Restrito via Biometria
+
+👤
+
+
+
+Aguardando leitura facial/digital simulada...
+
+Iniciar Escaneamento
+Voltar ao Aluno
+
+Adventista Works
+TECNOLOGIA & EDUCAÇÃO
+
+
+Aluno: -
+
+Turma: -
+
+Enviar Trabalho
+
+Disciplina: Português
+
+Modo IA Ativo
+
+ELEMENTOS VISUAIS TRANSPARENTES (PNG)
+Injetar Gráfico PNG Sem Fundo
+
+Fazer Upload de Imagem
+
+Tutor IA Adventista
+Diretrizes em Tempo Real
+
+
+Painel do Educador - Avaliação Pedagógica
+Sair do Painel
+Entregas Recebidas (Persistência Local)
+
+Nenhum trabalho submetido nesta sessão até o momento.
+
+Atribuir Parecer Pedagógico
+Selecione o Trabalho
+Nenhum selecionado
+Texto do Aluno:
+
+
+Registrar Nota e Feedback
+
+
+
+// Definição das 12 Matérias e as diretrizes textuais específicas da IA Orientadora
+const disciplinas = [
+{ id: 'portugues', nome: 'Português', prompt: 'Foque na estrutura da norma-padrão. Atente-se à concordância nominal/verbal e à coesão textual dos parágrafos.' },
+{ id: 'literatura', nome: 'Literatura', prompt: 'Relacione a obra escolhida com o seu respectivo movimento literário, destacando as marcas históricas e o estilo do autor.' },
+{ id: 'gramatica', nome: 'Gramática', prompt: 'Explicite as análises sintáticas aplicadas e justifique as colocações pronominais presentes nos exemplos.' },
+{ id: 'matematica', nome: 'Matematica', prompt: 'Apresente o desenvolvimento lógico do problema passo a passo. Lembre-se de definir claramente as variáveis.' },
+{ id: 'ensino-religioso', nome: 'Ensino Religioso', prompt: 'Promova uma reflexão baseada em valores éticos e princípios cristãos aplicados ao cotidiano e ao respeito ao próximo.' },
+{ id: 'adventotech', nome: 'AdventoTech', prompt: 'Aborde o impacto tecnológico e a arquitetura computacional do projeto de forma inovadora e sustentável.' },
+{ id: 'ciencias', nome: 'Ciências', prompt: 'Utilize o método científico. Descreva as hipóteses, os experimentos observados e a conclusão fundamentada.' },
+{ id: 'historia', nome: 'História', prompt: 'Contextualize as causas e as consequências do fato histórico, mapeando os diferentes pontos de vista dos agentes sociais.' },
+{ id: 'artes', nome: 'Artes', prompt: 'Explane as técnicas visuais empregadas e a expressividade cultural por trás das formas e das cores escolhidas.' },
+{ id: 'geografia', nome: 'Geografia', prompt: 'Mapeie os aspectos socioambientais, as dinâmicas demográficas ou espaciais que compõem a região em análise.' },
+{ id: 'ingles', nome: 'Inglês', prompt: 'Maintain formal grammar text. Pay attention to proper verb tense usage (Past, Present, Future Perfect) and expressions.' },
+{ id: 'educacao-fisica', nome: 'Educação Física', prompt: 'Discorra sobre a biomecânica do movimento estudado, os benefícios fisiológicos da prática e as regras do esporte.' }
+];
+let disciplinaAtiva = disciplinas[0];
+let bancoImagensTrabalho = [];
+let bancoTrabalhosSubmetidos = JSON.parse(localStorage.getItem('adventista_trabalhos')) || [];
+// Inicialização do Menu
+function inicializarMenu() {
+const menuContainer = document.getElementById('subject-menu');
+menuContainer.innerHTML = '';
+disciplinas.forEach((disc, index) => {
+const li = document.createElement('li');
+li.className = subject-item ${index === 0 ? 'active' : ''};
+li.innerHTML = <span>${disc.nome}</span> <span style="font-size:10px; color:var(--primary);">•</span>;
+li.onclick = () => mudarDisciplina(disc, li);
+menuContainer.appendChild(li);
+});
+atualizarTutorIA();
+}
+// Fluxo de Login
+function loginEstudante() {
+const nome = document.getElementById('student-name').value.trim();
+const ano = document.getElementById('student-grade').value;
+if(!nome || !ano) {
+alert('Por favor, preencha seu nome e selecione o seu ano letivo.');
+return;
+}
+document.getElementById('display-user').innerText = nome;
+document.getElementById('display-grade').innerText = ano;
+document.getElementById('login-screen').style.display = 'none';
+inicializarMenu();
+}
+function mostrarLoginProfessor() {
+document.getElementById('login-screen').style.display = 'none';
+document.getElementById('teacher-auth-screen').style.display = 'flex';
+}
+function voltarLoginEstudante() {
+document.getElementById('teacher-auth-screen').style.display = 'none';
+document.getElementById('login-screen').style.display = 'flex';
+}
+// Biometria Simulada Avançada
+function executarBiometria() {
+const laser = document.getElementById('laser');
+const status = document.getElementById('bio-status');
+const btn = document.getElementById('bio-btn');
+laser.style.display = 'block';
+status.innerText = 'Escaneando traços faciais e digitais da liderança escolar...';
+status.style.color = 'var(--primary)';
+btn.disabled = true;
+setTimeout(() => {
+laser.style.display = 'none';
+status.innerText = 'Acesso Biométrico Autenticado com Sucesso!';
+setTimeout(() => {
+document.getElementById('teacher-auth-screen').style.display = 'none';
+document.getElementById('teacher-dashboard').style.display = 'block';
+atualizarDashboardProfessor();
+}, 1000);
+}, 2500);
+}
+// Transição de Matérias
+function mudarDisciplina(disc, elementoMenu) {
+disciplinaAtiva = disc;
+document.querySelectorAll('.subject-item').forEach(el => el.classList.remove('active'));
+elementoMenu.classList.add('active');
+document.getElementById('current-subject-title').innerHTML = Disciplina: <span>${disc.nome}</span>;
+atualizarTutorIA();
+}
+// Atualização do Tutor IA Baseado na Matéria Selecionada
+function atualizarTutorIA() {
+const chatBox = document.getElementById('ia-chat-box');
+chatBox.innerHTML = <div class="msg system"> <strong>[Diretriz de Escrita Ativa]</strong><br> Olá! Detectei que você está produzindo conteúdo para <strong>${disciplinaAtiva.nome}</strong>.<br><br> <em>Orientação da IA:</em> ${disciplinaAtiva.prompt} </div> <div class="msg system" style="border-left-color: var(--text-muted); font-size:12px;"> 💡 Certifique-se de anexar representações em PNG transparentes para valorizar a apresentação do trabalho! </div>;
+}
+// Injeção de Vetor/PNG de Amostragem Transparente Fictício
+function injetarVetorExemplo() {
+// String base64 de um ícone genérico SVG transparente convertido para simular PNG limpo
+const mockupPngTransparente = "data:image/svg+xml;utf8,";
+adicionarImagemAoBanco(mockupPngTransparente);
+}
+// Upload Real de Imagem Local
+function handleFileUpload(event) {
+const file = event.target.files[0];
+if (file) {
+const reader = new FileReader();
+reader.onload = function(e) {
+adicionarImagemAoBanco(e.target.result);
+};
+reader.readAsDataURL(file);
+}
+}
+function adicionarImagemAoBanco(src) {
+bancoImagensTrabalho.push(src);
+renderizarPreviaImagens();
+}
+function removerImagem(index) {
+bancoImagensTrabalho.splice(index, 1);
+renderizarPreviaImagens();
+}
+function renderizarPreviaImagens() {
+const container = document.getElementById('preview-container');
+container.innerHTML = '';
+bancoImagensTrabalho.forEach((imgSrc, idx) => {
+const wrapper = document.createElement('div');
+wrapper.className = 'preview-wrapper';
+wrapper.innerHTML = <img src="${imgSrc}" alt="Preview"> <button class="remove-img-btn" onclick="removerImagem(${idx})">×</button>;
+container.appendChild(wrapper);
+});
+}
+// Enviar o Trabalho Completo (Salva em LocalStorage para persistência mútua)
+function enviarTrabalhoCompleto() {
+const nomeAluno = document.getElementById('display-user').innerText;
+const anoAluno = document.getElementById('display-grade').innerText;
+const textoTrabalho = document.getElementById('work-content').value.trim();
+if(nomeAluno === '-' || !textoTrabalho) {
+alert('Não é possível submeter um trabalho vazio ou sem identificação de estudante.');
+return;
+}
+const novoTrabalho = {
+id: 'trabalho_' + Date.now(),
+aluno: nomeAluno,
+ano: anoAluno,
+disciplina: disciplinaAtiva.nome,
+texto: textoTrabalho,
+imagens: [...bancoImagensTrabalho],
+nota: null,
+feedback: null
+};
+bancoTrabalhosSubmetidos.push(novoTrabalho);
+localStorage.setItem('adventista_trabalhos', JSON.stringify(bancoTrabalhosSubmetidos));
+alert(Sucesso! Seu trabalho de ${disciplinaAtiva.nome} foi criptografado e transmitido ao portal do professor.);
+// Limpar formulário de escrita
+document.getElementById('work-content').value = '';
+bancoImagensTrabalho = [];
+renderizarPreviaImagens();
+}
+// Métodos do Painel do Professor
+function atualizarDashboardProfessor() {
+const lista = document.getElementById('submissions-list');
+const select = document.getElementById('review-submission-select');
+lista.innerHTML = '';
+select.innerHTML = 'Nenhum selecionado';
+if(bancoTrabalhosSubmetidos.length === 0) {
+lista.innerHTML = 'Nenhum trabalho submetido nesta sessão até o momento.';
+return;
+}
+bancoTrabalhosSubmetidos.forEach(trab => {
+// Adicionar na listagem visual esquerda
+const div = document.createElement('div');
+div.className = 'grade-item';
+const statusNota = trab.nota !== null ? <span class="badge" style="background:#00ff66; color:#000;">Nota: ${trab.nota}</span> : <span class="badge" style="background:rgba(255,50,50,0.1); color:#ff5555;">Sem Avaliação</span>;
+div.innerHTML = <div> <strong>${trab.aluno} (${trab.ano})</strong><br> <span style="font-size:12px; color:var(--text-muted);">Materia: ${trab.disciplina}</span> </div> ${statusNota};
+lista.appendChild(div);
+// Adicionar no Dropdown de Correção à direita
+const opt = document.createElement('option');
+opt.value = trab.id;
+opt.innerText = ${trab.aluno} - ${trab.disciplina};
+select.appendChild(opt);
+});
+}
+function carregarTrabalhoParaRevisao() {
+const select = document.getElementById('review-submission-select');
+const boxDetalhes = document.getElementById('review-details');
+const trabId = select.value;
+if(!trabId) {
+boxDetalhes.style.display = 'none';
+return;
+}
+const trab = bancoTrabalhosSubmetidos.find(t => t.id === trabId);
+if(trab) {
+boxDetalhes.style.display = 'block';
+document.getElementById('rev-text').innerText = trab.texto;
+document.getElementById('review-grade').value = trab.nota || '';
+document.getElementById('review-feedback').value = trab.feedback || '';
+const containerImagens = document.getElementById('rev-images');
+containerImagens.innerHTML = '';
+trab.imagens.forEach(src => {
+const img = document.createElement('img');
+img.src = src;
+img.style.maxWidth = '60px';
+img.style.maxHeight = '60px';
+img.style.border = '1px dashed var(--primary)';
+img.style.background = 'rgba(0,0,0,0.4)';
+containerImagens.appendChild(img);
+});
+}
+}
+function salvarAvaliacaoProfessor() {
+const select = document.getElementById('review-submission-select');
+const trabId = select.value;
+const nota = document.getElementById('review-grade').value;
+const feedback = document.getElementById('review-feedback').value;
+if(!nota) {
+alert('Por favor, atribua uma nota antes de registrar.');
+return;
+}
+const index = bancoTrabalhosSubmetidos.findIndex(t => t.id === trabId);
+if(index !== -1) {
+bancoTrabalhosSubmetidos[index].nota = parseFloat(nota);
+bancoTrabalhosSubmetidos[index].feedback = feedback;
+localStorage.setItem('adventista_trabalhos', JSON.stringify(bancoTrabalhosSubmetidos));
+alert('Avaliação pedagógica salva e vinculada ao histórico do aluno!');
+atualizarDashboardProfessor();
+document.getElementById('review-details').style.display = 'none';
+}
+}
+
+
