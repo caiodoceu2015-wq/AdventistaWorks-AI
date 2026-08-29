@@ -1,0 +1,28 @@
+SchoolWorks-AI/
+├── server.js
+├── models/
+│   ├── User.js
+│   ├── Project.js
+│   └── Subject.js
+├── routes/
+│   ├── auth.js
+│   ├── projects.js
+│   ├── subjects.js
+│   ├── ai.js
+│   ├── upload.js
+│   └── facialRecognition.js
+├── middleware/
+│   └── auth.js
+├── client/ (React)
+│   ├── src/
+│   │   ├── pages/
+│   │   ├── components/
+│   │   ├── styles/
+│   │   └── App.js
+│   └── package.json
+└── package.json
+🔧 Instalação
+npm install
+cp .env.example .env
+# Configure suas chaves no .env
+npm run dev
