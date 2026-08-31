@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trabalho Escolar - Educação Adventista</title>
+    <style>
+        /* Cores baseadas na identidade da Escola Adventista */
+        :root {
+            --azul-escuro: #002d62;
+            --azul-claro: #0056b3;
+            --amarelo-detalhe: #f4b41a;
+            --cinza-fundo: #f8f9fa;
+            --texto-escuro: #333333;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--cinza-fundo);
+            color: var(--texto-escuro);
+            line-height: 1.6;
+        }
+
+        /* Cabeçalho */
+        header {
+            background-color: var(--azul-escuro);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-bottom: 5px solid var(--amarelo-detalhe);
+        }
+
+        header h1 {
+            font-size: 2.2rem;
+            margin-bottom: 5px;
+        }
+
+        header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        /* Barra de Navegação */
+        nav {
+            background-color: #ffffff;
+            display: flex;
+            justify-content: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        nav a {
+            color: var(--azul-escuro);
+            text-decoration: none;
+            padding: 15px 20px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        nav a:hover {
+            background-color: var(--azul-escuro);
+            color: white;
+        }
+
+        /* Container Principal */
+        .container {
+            max-width: 1000px;
+            margin: 30px auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        /* Seções de Conteúdo */
+        section {
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        section:last-child {
+            border-bottom: none;
+        }
+
+        h2 {
+            color: var(--azul-escuro);
+            margin-bottom: 15px;
+            font-size: 1.8rem;
+            border-left: 5px solid var(--azul-claro);
+            padding-left: 10px;
+        }
+
+        p {
+            margin-bottom: 15px;
+            font-size: 1.05rem;
+            text-align: justify;
+        }
+
+        /* Caixa de Destaque / Curiosidades */
+        .box-destaque {
+            background-color: #e6f0fa;
+            border-left: 5px solid var(--azul-claro);
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        /* Rodapé / Créditos do Trabalho */
+        footer {
+            background-color: var(--azul-escuro);
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin-top: 5px;
+            border-top: 5px solid var(--amarelo-detalhe);
+        }
+
+        footer p {
+            text-align: center;
+            font-size: 0.9rem;
+            margin: 5px 0;
+        }
+
+        /* Ajustes para Celular */
+        @media (max-width: 600px) {
+            header h1 { font-size: 1.6rem; }
+            .container { margin: 10px; padding: 15px; }
+            nav { flex-direction: column; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Cabeçalho do Trabalho -->
+    <header>
+        <h1>Título do Seu Trabalho Escolar</h1>
+        <p>Educação Adventista • [Sua Cidade]</p>
+    </header>
+
+    <!-- Menu de Navegação Rápida -->
+    <nav>
+        <a href="#introducao">Introdução</a>
+        <a href="#conteudo">Desenvolvimento</a>
+        <a href="#conclusao">Conclusão</a>
+    </nav>
+
+    <!-- Conteúdo Principal -->
+    <div class="container">
+
+        <!-- Seção 1: Introdução -->
+        <section id="introducao">
+            <h2>Introdução</h2>
+            <p>Substitua este texto pela introdução do seu tema. Explique brevemente o que o leitor vai encontrar neste site e qual é o objetivo da sua pesquisa escolar.</p>
+            <p>Dica: Um bom parágrafo inicial deve prender a atenção do professor e resumir a ideia central do trabalho.</p>
+        </section>
+
+        <!-- Seção 2: Desenvolvimento -->
+        <section id="conteudo">
+            <h2>Desenvolvimento do Tema</h2>
+            <p>Aqui entra a parte principal da sua pesquisa. Você pode dividir esse conteúdo em vários parágrafos. Explique os conceitos, dados históricos ou fórmulas que fazem parte do seu trabalho.</p>
+            
+            <!-- Caixa de Destaque para Citações ou Curiosidades -->
+            <div class="box-destaque">
+                <strong>Importante:</strong> Você pode usar este espaço azul para destacar uma frase de efeito, uma definição importante ou uma curiosidade sobre o assunto estudado.
+            </div>
+
+            <p>Continue escrevendo seu conteúdo aqui de forma organizada. Lembre-se de manter o texto claro e revisado.</p>
+        </section>
+
+        <!-- Seção 3: Conclusão -->
+        <section id="conclusao">
+            <h2>Conclusão</h2>
+            <p>Finalize o seu trabalho resumindo os pontos principais apresentados e fechando com a sua opinião ou com o aprendizado que o grupo/aluno obteve ao realizar este projeto.</p>
+        </section>
+
+    </div>
+
+    <!-- Rodapé com Identificação (Muito importante para a nota!) -->
+    <footer>
+        <p><strong>Componentes do Grupo:</strong> Seu Nome, Nome do Colega 1, Nome do Colega 2</p>
+        <p><strong>Disciplina:</strong> [Nome da Matéria] | <strong>Professor(a):</strong> [Nome do Prof]</p>
+        <p>Série / Ano: [Ex: 9º Ano A / 2º Ano E.M.] | Ano Letivo: 2026</p>
+    </footer>
+
+</body>
+</html>
