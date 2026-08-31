@@ -1,0 +1,71 @@
+#!/bin/bash
+
+# 1. Configurar o nome do repositório
+REPO_NAME="schoolworks"
+
+# 2. Criar a estrutura básica do site (caso não exista)
+if [ ! -f index.html ]; then
+    echo "Criando arquivo index.html inicial..."
+    cat <<EOF > index.html
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Schoolworks</title>
+</head>
+<body>
+    <h1>Site Schoolworks publicado com sucesso!</h1>
+    <p>Seu site já está online.</p>
+</body>
+</html>
+EOF
+fi
+
+# 3. Inicializar o Git localmente
+echo "Inicializando o repositório Git local..."
+git init
+git branch -M main
+
+# 4. Adicionar os arquivos e fazer o primeiro commit
+echo "Adicionando arquivos e criando commit..."
+git add .
+git commit -m "Primeiro commit: Estrutura do site"
+
+# 5. Solicitar o nome de usuário do GitHub para montar as URLs automaticamente
+echo "----------------------------------------"
+read -p "Digite o seu nome de usuário do GitHub: " GH_USER
+echo "----------------------------------------"
+
+# 6. Vincular e enviar para o GitHub
+# Nota: Você precisa criar o repositório vazio com o nome "schoolworks" no seu GitHub antes deste passo.
+echo "Vinculando ao repositório remoto do GitHub..."
+git remote add origin "https://github.com"
+
+echo "Enviando os arquivos para o GitHub..."
+git push -u origin main --force
+
+# 7. Redirecionar para o navegador para ativar o GitHub Pages e testar
+SITE_URL="https://$GH_USER.github.io/$REPO_NAME/"
+SETTINGS_URL="https://github.com"
+
+echo ""
+echo "========================================================="
+echo "Sucesso! Arquivos enviados para o GitHub."
+echo "Como o GitHub exige uma confirmação visual para ativar o Pages,"
+echo "estamos abrindo a página de configurações no seu navegador..."
+echo "========================================================="
+
+# Abrir no navegador (funciona em Windows, Mac e Linux)
+if command -v start &> /dev/null; then
+    start "$SETTINGS_URL"
+elif command -v xdg-open &> /dev/null; then
+    xdg-open "$SETTINGS_URL"
+elif command -v open &> /dev/null; then
+    open "$SETTINGS_URL"
+fi
+
+echo "Instruções finais na página aberta:"
+echo "1. Em 'Build and deployment' -> 'Source', mude para 'Deploy from a branch'."
+echo "2. Em 'Branch', selecione 'main' e clique em 'Save'."
+echo "3. Pronto! Em até 2 minutos seu link estará ativo em: $SITE_URL"
