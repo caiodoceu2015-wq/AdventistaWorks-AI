@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plataforma Educacional Interativa</title>
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --secondary: #06b6d4;
+            --dark: #1e1b4b;
+            --light: #f8fafc;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--light);
+            margin: 0;
+            padding: 20px;
+            color: var(--dark);
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+        }
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .tab-btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            background: #e2e8f0;
+            cursor: pointer;
+            font-weight: bold;
+            border-radius: 6px;
+            transition: 0.3s;
+        }
+        .tab-btn.active {
+            background: var(--primary);
+            color: white;
+        }
+        .screen { display: none; }
+        .screen.active { display: block; }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            box-sizing: border-box;
+        }
+        button {
+            background: var(--secondary);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            width: 100%;
+        }
+        button:hover { opacity: 0.9; }
+        #camera-container {
+            display: none;
+            text-align: center;
+            margin-top: 15px;
+        }
+        video {
+            width: 100%;
+            max-width: 400px;
+            border-radius: 8px;
+            background: #000;
+        }
+        .panel {
+            border: 2px dashed var(--primary);
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+        #preview img {
+            max-width: 200px;
+            margin-top: 10px;
+            border-radius: 4px;
+        }
+        .ai-box {
+            background: #f1f5f9;
+            padding: 15px;
+            border-left: 4px solid var(--secondary);
+            margin-top: 15px;
+            border-radius: 0 4px 4px 0;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Acesso ao Sistema Escolar</h2>
+    
+    <!-- Abas de Seleção de Perfil -->
+    <div class="tabs" id="auth-tabs">
+        <button class="tab-btn active" onclick="switchTab('aluno')">Sou Aluno</button>
+        <button class="tab-btn" onclick="switchTab('professor')">Sou Professor</button>
+    </div>
+
+    <!-- Formulário Aluno -->
+    <div id="screen-aluno" class="screen active">
+        <div class="form-group">
+            <label>E-mail do Aluno:</label>
+            <input type="email" id="email-aluno" placeholder="exemplo@escola.com">
+        </div>
+        <div class="form-group">
+            <label>Ano Escolar:</label>
+            <select id="ano-escolar">
+                <option value="">Selecione seu ano...</option>
+                <option value="1">1º Ano do Ensino Fundamental</option>
+                <option value="2">2º Ano do Ensino Fundamental</option>
+                <option value="3">3º Ano do Ensino Fundamental</option>
+                <option value="4">4º Ano do Ensino Fundamental</option>
+                <option value="5">5º Ano do Ensino Fundamental</option>
+                <option value="6">6º Ano do Ensino Fundamental</option>
+                <option value="7">7º Ano do Ensino Fundamental</option>
+                <option value="8">8º Ano do Ensino Fundamental</option>
+                <option value="9">9º Ano do Ensino Fundamental</option>
+            </select>
+        </div>
+        <button onclick="loginAluno()">Entrar Direto</button>
+    </div>
+
+    <!-- Formulário Professor -->
+    <div id="screen-professor" class="screen">
+        <div class="form-group">
+            <label>E-mail do Professor:</label>
+            <input type="email" id="email-professor" placeholder="professor@escola.com">
+        </div>
+        <button id="btn-biometria" onclick="iniciarBiometria()">Iniciar Biometria Facial</button>
+        
+        <div id="camera-container">
+            <p>Olhe para a câmera para validar sua identidade...</p>
+            <video id="video" autoplay playsinline></video>
+            <button onclick="simularEscaneamento()" style="margin-top: 10px; background: #22c55e;">Escanear Rosto</button>
+        </div>
+    </div>
+
+    <!-- Área de Trabalho (Exibida após Login) -->
+    <div id="screen-workspace" class="screen">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <h3 id="welcome-msg">Painel de Trabalho</h3>
+            <button onclick="logout()" style="width: auto; background: #ef4444; padding: 5px 10px;">Sair</button>
+        </div>
+        
+        <div class="panel">
+            <h4>Enviar Trabalho</h4>
+            <div class="form-group">
+                <label>Upload de Imagem (Apenas .PNG):</label>
+                <input type="file" id="file-png" accept=".png" onchange="handleImage(event)">
+                <div id="preview"></div>
+            </div>
+            
+            <div class="form-group">
+                <label>Escreva seu texto ou pergunta:</label>
+                <textarea id="texto-trabalho" rows="4" placeholder="Digite o conteúdo do seu trabalho ou faça uma pergunta para a IA..."></textarea>
+            </div>
+            
+            <button onclick="perguntarIA()" style="background: var(--primary);">Consultar IA Orientadora</button>
+            
+            <div id="ai-response-container" style="display: none;">
+                <h5>🤖 Resposta da IA Orientadora:</h5>
+                <div class="ai-box" id="ai-output"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    let userLogged = null;
+    let userYear = null;
+    let streamRef = null;
+
+    // Alternar entre abas Aluno/Professor
+    function switchTab(role) {
+        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+        document.querySelectorAll('.screen').forEach(scr => scr.classList.remove('active'));
+        
+        if(role === 'aluno') {
+            document.querySelectorAll('.tab-btn')[0].classList.add('active');
+            document.getElementById('screen-aluno').classList.add('active');
+        } else {
+            document.querySelectorAll('.tab-btn')[1].classList.add('active');
+            document.getElementById('screen-professor').classList.add('active');
+        }
+        fecharCamera();
+    }
+
+    // Login do Aluno (Acesso Livre com validação simples)
+    function loginAluno() {
+        const email = document.getElementById('email-aluno').value;
+        const ano = document.getElementById('ano-escolar').value;
+
+        if (!email.includes('@') || !ano) {
+            alert('Por favor, insira um e-mail válido e selecione seu ano escolar.');
+            return;
+        }
+
+        userLogged = 'Aluno';
+        userYear = parseInt(ano);
+        carregarPainel();
+    }
+
+    // Ativa a câmera real para simular a biometria do professor
+    async function iniciarBiometria() {
+        const email = document.getElementById('email-professor').value;
+        if (!email.includes('@')) {
+            alert('Por favor, insira um e-mail de professor válido primeiro.');
+            return;
+        }
+
+        document.getElementById('camera-container').style.display = 'block';
+        document.getElementById('btn-biometria').style.display = 'none';
+
+        try {
+            streamRef = await navigator.mediaDevices.getUserMedia({ video: true });
+            document.getElementById('video').srcObject = streamRef;
+        } catch (err) {
+            alert('Não foi possível acessar a câmera. Verifique as permissões.');
+        }
+    }
+
+    function fecharCamera() {
+        if (streamRef) {
+            streamRef.getTracks().forEach(track => track.stop());
+            streamRef = null;
+        }
+        document.getElementById('camera-container').style.display = 'none';
+        document.getElementById('btn-biometria').style.display = 'block';
+    }
+
+    // Simulação do processamento facial bem-sucedido
+    function simularEscaneamento() {
+        alert('Biometria Facial identificada com sucesso!');
+        fecharCamera();
+        userLogged = 'Professor';
+        userYear = 9; // Professores têm acesso ao nível máximo de complexidade
+        carregarPainel();
+    }
+
+    // Exibe o painel de criação de trabalhos
+    function carregarPainel() {
+        document.getElementById('auth-tabs').style.display = 'none';
+        document.querySelectorAll('.screen').forEach(scr => scr.classList.remove('active'));
+        document.getElementById('screen-workspace').classList.add('active');
+        
+        document.getElementById('welcome-msg').innerText = `Painel do ${userLogged} ${userLogged === 'Aluno' ? `(${userYear}º Ano)` : ''}`;
+    }
+
+    // Validação estrita de arquivos PNG
+    function handleImage(event) {
+        const file = event.target.files[0];
+        const preview = document.getElementById('preview');
+        preview.innerHTML = '';
+
+        if (file) {
+            if (file.type !== "image/png") {
+                alert("Erro: Apenas imagens com a extensão .PNG são permitidas!");
+                event.target.value = '';
+                return;
+            }
+
