@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AdventistaWorks - Painel do Educador</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #0b141a;
+            color: #e9edef;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            padding: 10px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 450px;
+            background-color: #111b21;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+            padding: 16px;
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #222e35;
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .avatar {
+            background-color: #00a884;
+            color: #ffffff;
+            font-weight: bold;
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 14px;
+        }
+
+        .brand-title {
+            font-size: 16px;
+            font-weight: bold;
+            color: #ffffff;
+        }
+
+        .brand-sub {
+            font-size: 10px;
+            color: #00a884;
+            letter-spacing: 1px;
+        }
+
+        .header-buttons {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-profile {
+            background-color: #202c33;
+            color: #aebac1;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+        }
+
+        .btn-logout {
+            background-color: #ea0038;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+        }
+
+        /* Painel */
+        .panel-title-box {
+            margin-bottom: 20px;
+        }
+
+        .panel-title {
+            font-size: 22px;
+            font-weight: bold;
+            color: #ffffff;
+        }
+
+        .panel-subtitle {
+            font-size: 22px;
+            color: #00e676;
+            font-weight: bold;
+            margin-top: 2px;
+        }
+
+        .panel-description {
+            font-size: 13px;
+            color: #8696a0;
+            margin-top: 6px;
+        }
+
+        .auth-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background-color: rgba(0, 168, 132, 0.1);
+            color: #00a884;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            margin-bottom: 24px;
+            border: 1px solid rgba(0, 168, 132, 0.2);
+        }
+
+        /* Seção */
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: bold;
+            color: #e9edef;
+        }
+
+        .badge-pending-count {
+            background-color: #00e676;
+            color: #0b141a;
+            font-weight: bold;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+        }
+
+        /* Card */
+        .card {
+            background-color: #202c33;
+            border-radius: 8px;
+            padding: 16px;
+            border: 1px solid #2a3942;
+            margin-bottom: 20px;
+        }
+
+        .tag-subject {
+            color: #00e676;
+            font-size: 11px;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin-bottom: 6px;
+        }
+
+        .card-title {
+            font-size: 15px;
+            font-weight: bold;
+            color: #ffffff;
+            margin-bottom: 4px;
+        }
+
+        .card-author {
+            font-size: 12px;
+            color: #8696a0;
+            margin-bottom: 12px;
+        }
+
+        .status-badge {
+            display: inline-block;
+            background-color: rgba(255, 143, 0, 0.1);
+            color: #ff8f00;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: bold;
+            margin-bottom: 12px;
+            border: 1px solid rgba(255, 143, 0, 0.2);
+        }
+
+        .card-text {
+            font-size: 13px;
+            color: #aebac1;
+            line-height: 1.4;
+            background-color: #111b21;
+            padding: 10px;
+            border-radius: 6px;
+            margin-bottom: 16px;
+        }
+
+        /* Formulário de Avaliação */
+        .eval-form {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            border-top: 1px solid #2a3942;
+            padding-top: 16px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .form-group label {
+            font-size: 12px;
+            color: #8696a0;
+        }
+
+        .form-group input, .form-group textarea {
+            background-color: #111b21;
+            border: 1px solid #2a3942;
+            color: #ffffff;
+            padding: 10px;
+            border-radius: 6px;
+            font-size: 14px;
+            outline: none;
+        }
+
+        .form-group input:focus, .form-group textarea:focus {
+            border-color: #00a884;
+        }
+
+        .btn-submit {
+            background-color: #00a884;
+            color: #ffffff;
+            border: none;
+            padding: 12px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn-submit:hover {
+            background-color: #008769;
+        }
+
+        .btn-submit:disabled {
+            background-color: #2a3942;
+            color: #8696a0;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo-area">
+                <div class="avatar">AW</div>
+                <div>
+                    <div class="brand-title">AdventistaWorks</div>
+                    <div class="brand-sub">EDUCAÇÃO & TECNOLOGIA</div>
+                </div>
+            </div>
+            <div class="header-buttons">
+                <button class="btn-profile">Prof: Central</button>
+                <button class="btn-logout">Sair</button>
+            </div>
+        </header>
+
+        <!-- Título -->
+        <div class="panel-title-box">
+            <h1 class="panel-title">Painel do Educador:</h1>
+            <div class="panel-subtitle">Prof. Coordenação</div>
+            <p class="panel-description">Módulo de Monitoramento e Avaliação de Projetos</p>
+        </div>
+
+        <div class="auth-badge">
+            <span>🛡️</span> Autenticação Biométrica Ativa
+        </div>
+
+        <div class="section-header">
+            <h2 class="section-title">Trabalhos Recebidos para Avaliação</h2>
+            <span class="badge-pending-count" id="pending-count">1 pendente</span>
+        </div>
+
+        <!-- Card de Trabalho -->
+        <div class="card">
+            <div class="tag-subject">História</div>
+            <h3 class="card-title" id="student-topic">Jogos Olímpicos da 🇬🇷 Grécia Antiga</h3>
+            <div class="card-author" id="student-info">Por: Caio Amorim de Almeida • 6º Ano - Ensino Fundamental</div>
+            
+            <div class="status-badge" id="status-text">Pendente</div>
+            
+            <p class="card-text">
+                Os Jogos Olímpicos na Grécia Antiga foram festivais religiosos e esportivos realizados a cada quatro anos na cidade sagrada de...
+            </p>
+
+            <!-- Formulário conectado ao Google -->
+            <form class="eval-form" id="google-form">
+                <div class="form-group">
+                    <label for="grade">Nota do Aluno (0 a 10)</label>
+                    <input type="number" id="grade" step="0.1" min="0" max="10" placeholder="Ex: 8.5" required>
+                </div>
+                <div class="form-group">
+                    <label for="feedback">Feedback Pedagógico</label>
+                    <textarea id="feedback" rows="3" placeholder="Digite um comentário para o aluno..." required></textarea>
+                </div>
+                <button type="submit" class="btn-submit" id="submit-btn">Enviar Avaliação para o Google</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Substitua pela URL gerada no seu Google Apps Script (Passo 2)
+        const GOOGLE_SCRIPT_URL = "SUA_URL_DO_GOOGLE_APPS_SCRIPT_AQUI";
+
+        document.getElementById('google-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const submitBtn = document.getElementById('submit-btn');
+            const grade = document.getElementById('grade').value;
+            const feedback = document.getElementById('feedback').value;
+            const student = "Caio Amorim de Almeida";
+            const topic = "Jogos Olímpicos da Grécia Antiga";
+
+            submitBtn.disabled = true;
+            submitBtn.innerText = "Enviando...";
+
+            // Envia os dados para a Planilha do Google via API
+            fetch(GOOGLE_SCRIPT_URL, {
+                method: "POST",
+                mode: "no-cors",
